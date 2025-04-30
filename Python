@@ -1,0 +1,45 @@
+from telegram.ext import Updater, CommandHandler
+import random
+from flask import Flask
+
+# Bot token
+TOKEN = '8166041907:AAGnwg5vRhf8PFgVkSYwYwrWweJsq52LzQI'
+
+app = Flask(__name__)
+
+@app.route('/')
+def index():
+    return "Bot is running!"
+
+# Start message
+def start(update, context):
+    update.message.reply_text("Welcome to Aviator Hacks Bot! Type /predict to get a prediction tip.")
+
+# Predict command
+def predict(update, context):
+    tips = [
+        "Wait till 1.50x then exit.",
+        "High chance of 2.00x next round.",
+        "Risky round incoming, skip this one.",
+        "1.20x safe bet now!",
+        "Fly high! Go for 3.00x."
+    ]
+    tip = random.choice(tips)
+    message = f"""**Prediction:** {tip}
+
+1️⃣ 1WIN special link: Activate 💶 - http://1wanzf.life/#2jt5  
+2️⃣ My secret promocode - *PAISA100X*
+"""
+    update.message.reply_text(message, parse_mode='Markdown')
+
+# Set up the bot
+updater = Updater(TOKEN, use_context=True)
+dp = updater.dispatcher
+dp.add_handler(CommandHandler("start", start))
+dp.add_handler(CommandHandler("predict", predict))
+
+# Start polling
+updater.start_polling()
+
+if __name__ == "__main__":
+    app.run(host="0.0.0.0", port=5000)
